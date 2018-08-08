@@ -6,7 +6,7 @@
     <AssemblyName>PipServices.Aws</AssemblyName>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>3.0.0</Version>
+    <Version>3.0.1</Version>
     <Authors>Sergey Seroukhov, Alex Mazur</Authors>
     <Copyright>Conceptual Vision Consulting LLC. 2017-2018</Copyright>
     <Description>AWS components for Pip.Services in .NET</Description>
@@ -20,10 +20,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="PipServices.Commons" Version="3.0.0" />
-    <PackageReference Include="PipServices.Components" Version="3.0.1" />
-    <PackageReference Include="PipServices.Messaging" Version="3.0.0" />
-    <PackageReference Include="AWSSDK.SQS" Version="3.3.3.12" />
+    <PackageReference Include="PipServices.Commons" Version="3.0.2" />
+    <PackageReference Include="PipServices.Components" Version="3.0.2" />
+    <PackageReference Include="PipServices.Messaging" Version="3.0.1" />
+    <PackageReference Include="AWSSDK.SQS" Version="3.3.3.14" />
   </ItemGroup>
 
 </Project>

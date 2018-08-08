@@ -60,7 +60,7 @@ namespace PipServices.Aws.Queues
                 throw new InvalidStateException(correlationId, "NOT_OPENED", "The queue is not opened");
         }
 
-        public override bool IsOpened()
+        public override bool IsOpen()
         {
             return _queue != null;
         }
@@ -160,39 +160,39 @@ namespace PipServices.Aws.Queues
             }
         }
 
-        private MessageEnvelop ToMessage(Message envelop)
+        private MessageEnvelope ToMessage(Message envelope)
         {
-            if (envelop == null) return null;
+            if (envelope == null) return null;
 
-            MessageEnvelop message = null;
+            MessageEnvelope message = null;
 
             try
             {
-                message = JsonConverter.FromJson<MessageEnvelop>(envelop.Body);
+                message = JsonConverter.FromJson<MessageEnvelope>(envelope.Body);
             }
             catch
             {
                 // Handle broken messages gracefully
-                _logger.Warn(null, "Cannot deserialize message: " + envelop.Body);
+                _logger.Warn(null, "Cannot deserialize message: " + envelope.Body);
             }
 
             // If message is broken or null
             if (message == null)
             {
-                message = new MessageEnvelop
+                message = new MessageEnvelope
                 {
-                    Message = envelop.Body
+                    Message = envelope.Body
                 };
             }
 
-            message.SentTimeUtc = DateTime.UtcNow;
-            message.MessageId = envelop.MessageId;
-            message.Reference = envelop;
+            message.SentTime = DateTime.UtcNow;
+            message.MessageId = envelope.MessageId;
+            message.Reference = envelope;
 
             return message;
         }
 
-        public override async Task SendAsync(string correlationId, MessageEnvelop message)
+        public override async Task SendAsync(string correlationId, MessageEnvelope message)
         {
             CheckOpened(correlationId);
             var content = JsonConverter.ToJson(message);
@@ -212,7 +212,7 @@ namespace PipServices.Aws.Queues
             await Task.Delay(0);
         }
 
-        public override async Task<MessageEnvelop> PeekAsync(string correlationId)
+        public override async Task<MessageEnvelope> PeekAsync(string correlationId)
         {
             CheckOpened(correlationId);
 
@@ -226,10 +226,10 @@ namespace PipServices.Aws.Queues
             };
             var response = await _client.ReceiveMessageAsync(request, _cancel.Token);
 
-            var envelop = response.Messages.Count > 0 ? response.Messages[0] : null;
-            if (envelop == null) return null;
+            var envelope = response.Messages.Count > 0 ? response.Messages[0] : null;
+            if (envelope == null) return null;
 
-            var message = ToMessage(envelop);
+            var message = ToMessage(envelope);
             if (message != null)
             {
                 _logger.Trace(message.CorrelationId, "Peeked message {0} on {1}", message, this);
@@ -238,7 +238,7 @@ namespace PipServices.Aws.Queues
             return message;
         }
 
-        public override async Task<List<MessageEnvelop>> PeekBatchAsync(string correlationId, int messageCount)
+        public override async Task<List<MessageEnvelope>> PeekBatchAsync(string correlationId, int messageCount)
         {
             CheckOpened(correlationId);
 
@@ -251,12 +251,12 @@ namespace PipServices.Aws.Queues
             };
             var response = await _client.ReceiveMessageAsync(request, _cancel.Token);
 
-            var envelops = response.Messages;
-            var messages = new List<MessageEnvelop>();
+            var envelopes = response.Messages;
+            var messages = new List<MessageEnvelope>();
 
-            foreach (var envelop in envelops)
+            foreach (var envelope in envelopes)
             {
-                var message = ToMessage(envelop);
+                var message = ToMessage(envelope);
                 if (message != null)
                     messages.Add(message);
             }
@@ -266,7 +266,7 @@ namespace PipServices.Aws.Queues
             return messages;
         }
 
-        public override async Task<MessageEnvelop> ReceiveAsync(string correlationId, long waitTimeout)
+        public override async Task<MessageEnvelope> ReceiveAsync(string correlationId, long waitTimeout)
         {
             CheckOpened(correlationId);
 
@@ -280,8 +280,8 @@ namespace PipServices.Aws.Queues
             };
             var response = await _client.ReceiveMessageAsync(request, _cancel.Token);
 
-            var envelop = response.Messages.Count > 0 ? response.Messages[0] : null;
-            var message = ToMessage(envelop);
+            var envelope = response.Messages.Count > 0 ? response.Messages[0] : null;
+            var message = ToMessage(envelope);
 
             if (message != null)
             {
@@ -292,18 +292,18 @@ namespace PipServices.Aws.Queues
             return message;
         }
 
-        public override async Task RenewLockAsync(MessageEnvelop message, long lockTimeout)
+        public override async Task RenewLockAsync(MessageEnvelope message, long lockTimeout)
         {
             CheckOpened(message.CorrelationId);
 
             // Extend the message visibility
-            var envelop = (Message) message.Reference;
-            if (envelop != null)
+            var envelope = (Message) message.Reference;
+            if (envelope != null)
             {
                 var request = new ChangeMessageVisibilityRequest()
                 {
                     QueueUrl = _queue,
-                    ReceiptHandle = envelop.ReceiptHandle,
+                    ReceiptHandle = envelope.ReceiptHandle,
                     VisibilityTimeout = (int)(lockTimeout / 1000)
                 };
                 await _client.ChangeMessageVisibilityAsync(request, _cancel.Token);
@@ -312,18 +312,18 @@ namespace PipServices.Aws.Queues
             }
         }
 
-        public override async Task AbandonAsync(MessageEnvelop message)
+        public override async Task AbandonAsync(MessageEnvelope message)
         {
             CheckOpened(message.CorrelationId);
 
             // Make the message immediately visible
-            var envelop = (Message) message.Reference;
-            if (envelop != null)
+            var envelope = (Message) message.Reference;
+            if (envelope != null)
             {
                 var request = new ChangeMessageVisibilityRequest()
                 {
                     QueueUrl = _queue,
-                    ReceiptHandle = envelop.ReceiptHandle,
+                    ReceiptHandle = envelope.ReceiptHandle,
                     VisibilityTimeout = 0
                 };
                 await _client.ChangeMessageVisibilityAsync(request, _cancel.Token);
@@ -333,14 +333,14 @@ namespace PipServices.Aws.Queues
             }
         }
 
-        public override async Task CompleteAsync(MessageEnvelop message)
+        public override async Task CompleteAsync(MessageEnvelope message)
         {
             CheckOpened(message.CorrelationId);
 
-            var envelop = (Message)message.Reference;
-            if (envelop != null)
+            var envelope = (Message)message.Reference;
+            if (envelope != null)
             {
-                await _client.DeleteMessageAsync(_queue, envelop.ReceiptHandle, _cancel.Token);
+                await _client.DeleteMessageAsync(_queue, envelope.ReceiptHandle, _cancel.Token);
 
                 message.Reference = null;
                 _logger.Trace(message.CorrelationId, "Completed message {0} at {1}", message, this);
@@ -348,11 +348,11 @@ namespace PipServices.Aws.Queues
             await Task.Delay(0);
         }
 
-        public override async Task MoveToDeadLetterAsync(MessageEnvelop message)
+        public override async Task MoveToDeadLetterAsync(MessageEnvelope message)
         {
             CheckOpened(message.CorrelationId);
-            var envelop = (Message)message.Reference;
-            if (envelop != null)
+            var envelope = (Message)message.Reference;
+            if (envelope != null)
             {
                 // Resend message to dead queue if it is defined
                 if (_deadQueue != null)
@@ -366,7 +366,7 @@ namespace PipServices.Aws.Queues
                 }
 
                 // Remove the message from the queue
-                await _client.DeleteMessageAsync(_queue, envelop.ReceiptHandle, _cancel.Token);
+                await _client.DeleteMessageAsync(_queue, envelope.ReceiptHandle, _cancel.Token);
                 message.Reference = null;
 
                 _counters.IncrementOne("queue." + Name + ".dead_messages");
@@ -374,7 +374,7 @@ namespace PipServices.Aws.Queues
             }
         }
 
-        public override async Task ListenAsync(string correlationId, Func<MessageEnvelop, IMessageQueue, Task> callback)
+        public override async Task ListenAsync(string correlationId, Func<MessageEnvelope, IMessageQueue, Task> callback)
         {
             CheckOpened(correlationId);
             _logger.Debug(correlationId, "Started listening messages at {0}", this);
@@ -390,11 +390,11 @@ namespace PipServices.Aws.Queues
                     MaxNumberOfMessages = 1
                 };
                 var response = await _client.ReceiveMessageAsync(_queue, _cancel.Token);
-                var envelop = response.Messages.Count > 0 ? response.Messages[0] : null;
+                var envelope = response.Messages.Count > 0 ? response.Messages[0] : null;
 
-                if (envelop != null && !_cancel.IsCancellationRequested)
+                if (envelope != null && !_cancel.IsCancellationRequested)
                 {
-                    var message = ToMessage(envelop);
+                    var message = ToMessage(envelope);
 
                     _counters.IncrementOne("queue." + Name + ".received_messages");
                     _logger.Debug(message.CorrelationId, "Received message {0} via {1}", message, this);
