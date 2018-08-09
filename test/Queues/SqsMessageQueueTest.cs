@@ -13,7 +13,7 @@ namespace PipServices.Aws.Queues
 
         public AmazonSqsMessageQueueTest()
         {
-            var AWS_ENABLED = Environment.GetEnvironmentVariable("AWS_ENABLED") ?? "false";
+            var AWS_ENABLED = Environment.GetEnvironmentVariable("AWS_ENABLED") ?? "true";
             var AWS_REGION = Environment.GetEnvironmentVariable("AWS_REGION") ?? "us-east-1";
             var AWS_ACCOUNT = Environment.GetEnvironmentVariable("AWS_ACCOUNT");
             var AWS_ACCESS_ID = Environment.GetEnvironmentVariable("AWS_ACCESS_ID");
@@ -29,8 +29,8 @@ namespace PipServices.Aws.Queues
                     "connection.uri", AWS_QUEUE_ARN,
                     "connection.region", AWS_REGION,
                     "connection.account", AWS_ACCOUNT,
-                    "credential.access_id", AWS_ACCESS_ID,
-                    "credential.access_key", AWS_ACCESS_KEY
+                    "credential.access_id", AWS_ACCESS_ID ?? "AKIAI2B3PGHEAAK4BPUQ",
+                    "credential.access_key", AWS_ACCESS_KEY ?? "zQZGX0vGL6OD936fCcP1v6YmpiSdW28oUcezAnb7"
                 ));
 
                 _queue.OpenAsync(null).Wait();
