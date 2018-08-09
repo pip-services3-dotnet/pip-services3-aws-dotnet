@@ -15,7 +15,7 @@ using PipServices.Messaging.Queues;
 
 namespace PipServices.Aws.Queues
 {
-    public class AmazonSqsMessageQueue : MessageQueue
+    public class SqsMessageQueue : MessageQueue
     {
         private long DefaultVisibilityTimeout = 60000;
         private long DefaultCheckInterval = 10000;
@@ -25,20 +25,20 @@ namespace PipServices.Aws.Queues
         private string _deadQueue;
         private CancellationTokenSource _cancel = new CancellationTokenSource();
 
-        public AmazonSqsMessageQueue(string name = null)
+        public SqsMessageQueue(string name = null)
         {
             Name = name;
             Capabilities = new MessagingCapabilities(true, true, true, true, true, false, true, true, true);
             Interval = DefaultCheckInterval;
         }
 
-        public AmazonSqsMessageQueue(string name, ConfigParams config)
+        public SqsMessageQueue(string name, ConfigParams config)
             : this(name)
         {
             if (config != null) Configure(config);
         }
 
-        public AmazonSqsMessageQueue(string name, AmazonSQSClient client, string queue)
+        public SqsMessageQueue(string name, AmazonSQSClient client, string queue)
             : this(name)
         {
             _client = client;

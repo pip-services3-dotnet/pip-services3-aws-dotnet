@@ -5,6 +5,7 @@ It provides components to integrate with AWS infrastructure services
 
 - **Connect** - AWS connection resolver
 - **Queues** - Simple Queue Services
+- **Log** - CloudWatch Logger
 
 Quick Links:
 

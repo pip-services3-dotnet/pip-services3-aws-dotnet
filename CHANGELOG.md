@@ -2,6 +2,9 @@
 
 ## <a name="3.0.0"></a> 3.0.0 (2018-08-23)
 
+# Features
+* **log** Added CloudWatchLogger
+
 ### Breaking Changed
 * Updated dependencies to version 3.0
 

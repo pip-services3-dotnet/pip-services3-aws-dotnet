@@ -21,4 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\src\src.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Log\" />
+  </ItemGroup>
 </Project>
