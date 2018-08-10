@@ -4,6 +4,7 @@
 
 # Features
 * **log** Added CloudWatchLogger
+* **count** Added CloudWatchCounters
 
 ### Breaking Changed
 * Updated dependencies to version 3.0

@@ -6,7 +6,7 @@
     <AssemblyName>PipServices.Aws</AssemblyName>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>3.0.2</Version>
+    <Version>3.0.3</Version>
     <Authors>Sergey Seroukhov, Alex Mazur</Authors>
     <Copyright>Conceptual Vision Consulting LLC. 2017-2018</Copyright>
     <Description>AWS components for Pip.Services in .NET</Description>
@@ -26,9 +26,11 @@
     <PackageReference Include="AWSSDK.Core" Version="3.3.24.6" />
     <PackageReference Include="AWSSDK.CloudWatchLogs" Version="3.3.5" />
     <PackageReference Include="PipServices.Commons" Version="3.0.3" />
+    <PackageReference Include="AWSSDK.CloudWatch" Version="3.3.6.9" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Log\" />
+    <Folder Include="Count\" />
   </ItemGroup>
 </Project>

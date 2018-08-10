@@ -23,5 +23,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Log\" />
+    <Folder Include="Count\" />
   </ItemGroup>
 </Project>
