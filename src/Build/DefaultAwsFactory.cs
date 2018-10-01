@@ -6,6 +6,11 @@ using PipServices.Components.Build;
 
 namespace PipServices.Aws.Build
 {
+    /// <summary>
+    /// Creates AWS components by their descriptors.
+    /// </summary>
+    /// See <see cref="CloudWatchCounters"/>, <see cref="CloudWatchLogger"/>, 
+    /// <see cref="SqsMessageQueue"/>, <see cref="SqsMessageQueueFactory"/>
     public class DefaultAwsFactory: Factory
     {
         public static Descriptor Descriptor = new Descriptor("pip-services", "factory", "aws", "default", "1.0");
@@ -14,6 +19,9 @@ namespace PipServices.Aws.Build
         public static Descriptor CloudWatchLoggerDescriptor = new Descriptor("pip-services", "logger", "cloudwatch", "*", "1.0");
         public static Descriptor CloudWatchCountersDescriptor = new Descriptor("pip-services", "counters", "cloudwatch", "*", "1.0");
 
+        /// <summary>
+        /// Create a new instance of the factory.
+        /// </summary>
         public DefaultAwsFactory()
         {
             RegisterAsType(SqsMessageQueueFactoryDescriptor, typeof(SqsMessageQueueFactory));

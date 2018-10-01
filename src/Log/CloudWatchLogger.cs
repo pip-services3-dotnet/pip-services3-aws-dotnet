@@ -18,6 +18,53 @@ using PipServices.Components.Log;
 
 namespace PipServices.Aws.Log
 {
+    /// <summary>
+    /// Logger that writes log messages to AWS Cloud Watch Log.
+    /// 
+    /// ### Configuration parameters ###
+    /// 
+    /// - stream:                        (optional) Cloud Watch Log stream(default: context name)
+    /// - group:                         (optional) Cloud Watch Log group(default: context instance ID or hostname)
+    /// - connections:                   
+    /// - discovery_key:               (optional) a key to retrieve the connection from IDiscovery
+    /// - region:                      (optional) AWS region
+    /// - credentials:    
+    /// - store_key:                   (optional) a key to retrieve the credentials from ICredentialStore
+    /// - access_id:                   AWS access/client id
+    /// - access_key:                  AWS access/client id
+    /// - options:
+    /// - interval:        interval in milliseconds to save current counters measurements(default: 5 mins)
+    /// - reset_timeout:   timeout in milliseconds to reset the counters. 0 disables the reset(default: 0)
+    /// 
+    /// ### References ###
+    /// 
+    /// - <code>\*:context-info:\*:\*:1.0</code>      (optional) ContextInfo to detect the context id and specify counters source
+    /// - <code>\*:discovery:\*:\*:1.0</code>         (optional) IDiscovery services to resolve connections
+    /// - <code>\*:credential-store:\*:\*:1.0</code>  (optional) Credential stores to resolve credentials
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// var logger = new Logger();
+    /// logger.Configure(ConfigParams.FromTuples(
+    /// "stream", "mystream",
+    /// "group", "mygroup",
+    /// "connection.region", "us-east-1",
+    /// "connection.access_id", "XXXXXXXXXXX",
+    /// "connection.access_key", "XXXXXXXXXXX"     ));
+    /// 
+    /// logger.SetReferences(References.FromTuples(
+    /// new Descriptor("pip-services", "logger", "console", "default", "1.0"), 
+    /// new ConsoleLogger() ));
+    /// 
+    /// logger.Open("123");
+    /// 
+    /// logger.SetLevel(LogLevel.debug);
+    /// 
+    /// logger.Error("123", ex, "Error occured: %s", ex.message);
+    /// logger.Debug("123", "Everything is OK.");
+    /// </code>
+    /// </example>
+    /// See <see cref="Counter"/>, <see cref="CachedCounters"/>, <see cref="CompositeCounters"/>
     public class CloudWatchLogger : CachedLogger, IReferenceable, IOpenable
     {
         private FixedRateTimer _timer;
@@ -27,9 +74,16 @@ namespace PipServices.Aws.Log
         private string _stream = null;
         private string _lastToken = null;
 
+        /// <summary>
+        /// Creates a new instance of this logger.
+        /// </summary>
         public CloudWatchLogger()
         { }
 
+        /// <summary>
+        /// Configures component by passing configuration parameters.
+        /// </summary>
+        /// <param name="config">configuration parameters to be set.</param>
         public override void Configure(ConfigParams config)
         {
             base.Configure(config);
@@ -39,12 +93,23 @@ namespace PipServices.Aws.Log
             _stream = config.GetAsStringWithDefault("stream", _stream);
         }
 
+        /// <summary>
+        /// Sets references to dependent components.
+        /// </summary>
+        /// <param name="references">references to locate the component dependencies.</param>
         public override void SetReferences(IReferences references)
         {
             base.SetReferences(references);
             _connectionResolver.SetReferences(references);
         }
 
+        /// <summary>
+        /// Writes a log message to the logger destination.
+        /// </summary>
+        /// <param name="level">a log level.</param>
+        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="error">an error object associated with this message.</param>
+        /// <param name="message">a human-readable message to log.</param>
         protected override void Write(LogLevel level, string correlationId, Exception error, string message)
         {
             if (Level < level)
@@ -55,11 +120,19 @@ namespace PipServices.Aws.Log
             base.Write(level, correlationId, error, message);
         }
 
+        /// <summary>
+        /// Checks if the component is opened.
+        /// </summary>
+        /// <returns>true if the component has been opened and false otherwise.</returns>
         public bool IsOpen()
         {
             return _timer != null;
         }
 
+        /// <summary>
+        /// Opens the component.
+        /// </summary>
+        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
         public async Task OpenAsync(string correlationId)
         {
             if (IsOpen()) return;
@@ -140,6 +213,10 @@ namespace PipServices.Aws.Log
             }
         }
 
+        /// <summary>
+        /// Closes component and frees used resources.
+        /// </summary>
+        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
         public async Task CloseAsync(string correlationId)
         {
             // Log all remaining messages before closing
@@ -192,7 +269,11 @@ namespace PipServices.Aws.Log
 
             return build.ToString();
         }
-    
+
+        /// <summary>
+        /// Saves log messages from the cache.
+        /// </summary>
+        /// <param name="messages">a list with log messages</param>
         protected override void Save(List<LogMessage> messages)
         {
             if (messages == null || messages.Count == 0) return;

@@ -15,6 +15,51 @@ using PipServices.Components.Log;
 
 namespace PipServices.Aws.Count
 {
+    /// <summary>
+    /// Performance counters that periodically dumps counters to AWS Cloud Watch Metrics.
+    /// 
+    /// ### Configuration parameters ###
+    /// 
+    /// - connections:                   
+    /// - discovery_key:         (optional) a key to retrieve the connection from IDiscovery
+    /// - region:                (optional) AWS region
+    /// - credentials:    
+    /// - store_key:             (optional) a key to retrieve the credentials from ICredentialStore
+    /// - access_id:             AWS access/client id
+    /// - access_key:            AWS access/client id
+    /// - options:
+    /// - interval:              interval in milliseconds to save current counters measurements(default: 5 mins)
+    /// - reset_timeout:         timeout in milliseconds to reset the counters. 0 disables the reset(default: 0)
+    /// ### References ###
+    /// 
+    /// - <code>\*:context-info:\*:\*:1.0</code>      (optional) ContextInfo to detect the context id and specify counters source
+    /// - <code>\*:discovery:\*:\*:1.0</code>         (optional) IDiscovery services to resolve connections
+    /// - <code>\*:credential-store:\*:\*:1.0</code>  (optional) Credential stores to resolve credentials
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// var counters = new CloudWatchCounters();
+    /// counters.Configure(ConfigParams.FromTuples(
+    /// "connection.region", "us-east-1",
+    /// "connection.access_id", "XXXXXXXXXXX",
+    /// "connection.access_key", "XXXXXXXXXXX"  ));
+    /// 
+    /// counters.SetReferences(References.fromTuples(
+    /// new Descriptor("pip-services", "logger", "console", "default", "1.0"), 
+    /// new ConsoleLogger() ));
+    /// counters.Open("123");
+    /// 
+    /// counters.Increment("mycomponent.mymethod.calls");
+    /// var timing = counters.BeginTiming("mycomponent.mymethod.exec_time");
+    /// try {
+    /// ...
+    /// } finally {
+    /// timing.EndTiming();
+    /// }
+    /// counters.Dump();
+    /// </code>
+    /// </example>
+    /// See <see cref="Counter"/>, <see cref="CachedCounters"/>, <see cref="CompositeCounters"/>
     public class CloudWatchCounters : CachedCounters, IReferenceable, IOpenable
     {
         private CompositeLogger _logger = new CompositeLogger();
@@ -24,9 +69,16 @@ namespace PipServices.Aws.Count
         private string _instance;
         private AmazonCloudWatchClient _client;
 
+        /// <summary>
+        /// Creates a new instance of this counters.
+        /// </summary>
         public CloudWatchCounters()
         { }
 
+        /// <summary>
+        /// Configures component by passing configuration parameters.
+        /// </summary>
+        /// <param name="config">configuration parameters to be set.</param>
         public override void Configure(ConfigParams config)
         {
             base.Configure(config);
@@ -36,6 +88,10 @@ namespace PipServices.Aws.Count
             _instance = config.GetAsStringWithDefault("instance", _instance);
         }
 
+        /// <summary>
+        /// Sets references to dependent components.
+        /// </summary>
+        /// <param name="references">references to locate the component dependencies.</param>
         public virtual void SetReferences(IReferences references)
         {
             _logger.SetReferences(references);
@@ -49,11 +105,19 @@ namespace PipServices.Aws.Count
                 _instance = contextInfo.ContextId;
         }
 
+        /// <summary>
+        /// Checks if the component is opened.
+        /// </summary>
+        /// <returns>true if the component has been opened and false otherwise.</returns>
         public bool IsOpen()
         {
             return _opened;
         }
 
+        /// <summary>
+        /// Opens the component.
+        /// </summary>
+        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
         public async Task OpenAsync(string correlationId)
         {
             if (_opened) return;
@@ -77,6 +141,10 @@ namespace PipServices.Aws.Count
             await Task.Delay(0);
         }
 
+        /// <summary>
+        /// Closes component and frees used resources.
+        /// </summary>
+        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
         public async Task CloseAsync(string correlationId)
         {
             _opened = false;
@@ -133,6 +201,10 @@ namespace PipServices.Aws.Count
             return value;
         }
 
+        /// <summary>
+        /// Saves the current counters measurements.
+        /// </summary>
+        /// <param name="counters">current counters measurements to be saves.</param>
         protected override void Save(IEnumerable<Counter> counters)
         {
             if (_client == null) return;
@@ -151,7 +223,7 @@ namespace PipServices.Aws.Count
 
                 foreach (var counter in counters)
                 {
-                    data.Add(GetCounterData(counter, now, dimensions));  
+                    data.Add(GetCounterData(counter, now, dimensions));
 
                     if (data.Count >= 20)
                     {
@@ -170,7 +242,7 @@ namespace PipServices.Aws.Count
                 {
                     _client.PutMetricDataAsync(
                         new PutMetricDataRequest
-                        { 
+                        {
                             Namespace = _source,
                             MetricData = data
                         }
