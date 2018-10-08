@@ -12,7 +12,7 @@ namespace PipServices.Aws.Connect
     /// 
     /// ### Configuration parameters ###
     /// 
-    /// connections:                   
+    /// connections:
     /// - discovery_key:               (optional) a key to retrieve the connection from <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_connect_1_1_i_discovery.html">IDiscovery</a>
     /// - region:                      (optional) AWS region
     /// - partition:                   (optional) AWS partition
@@ -21,7 +21,7 @@ namespace PipServices.Aws.Connect
     /// - resource:                    (optional) AWS resource id
     /// - arn:                         (optional) AWS resource ARN
     /// 
-    /// credentials:    
+    /// credentials:
     /// - store_key:                   (optional) a key to retrieve the credentials from <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_auth_1_1_i_credential_store.html">ICredentialStore</a>
     /// - access_id:                   AWS access/client id
     /// - access_key:                  AWS access/client id
