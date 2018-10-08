@@ -163,22 +163,25 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>_lastToken</b> = nu
 <ul>
 <li>stream: (optional) Cloud Watch <a class="el" href="namespace_pip_services_1_1_aws_1_1_log.html">Log</a> stream(default: context name)</li>
 <li>group: (optional) Cloud Watch <a class="el" href="namespace_pip_services_1_1_aws_1_1_log.html">Log</a> group(default: context instance ID or hostname)</li>
-<li>connections: <br />
-- discovery_key: (optional) a key to retrieve the connection from IDiscovery</li>
+</ul>
+<p>connections: <br />
+- discovery_key: (optional) a key to retrieve the connection from <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_connect_1_1_i_discovery.html">IDiscovery</a></p><ul>
 <li>region: (optional) AWS region</li>
-<li>credentials: <br />
-- store_key: (optional) a key to retrieve the credentials from ICredentialStore</li>
+</ul>
+<p>credentials: <br />
+- store_key: (optional) a key to retrieve the credentials from <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_auth_1_1_i_credential_store.html">ICredentialStore</a></p><ul>
 <li>access_id: AWS access/client id</li>
 <li>access_key: AWS access/client id</li>
-<li>options:</li>
+</ul>
+<p>options:</p><ul>
 <li>interval: interval in milliseconds to save current counters measurements(default: 5 mins)</li>
 <li>reset_timeout: timeout in milliseconds to reset the counters. 0 disables the reset(default: 0)</li>
 </ul>
 <h3>References</h3>
 <ul>
-<li><code>*:context-info:*:*:1.0</code> (optional) ContextInfo to detect the context id and specify counters source</li>
-<li><code>*:discovery:*:*:1.0</code> (optional) IDiscovery services to resolve connections</li>
-<li><code>*:credential-store:*:*:1.0</code> (optional) Credential stores to resolve credentials </li>
+<li>*:context-info:*:*:1.0 (optional) <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/class_pip_services_1_1_components_1_1_info_1_1_context_info.html">ContextInfo</a> to detect the context id and specify counters source</li>
+<li>*:discovery:*:*:1.0 (optional) <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_connect_1_1_i_discovery.html">IDiscovery</a> services to resolve connections</li>
+<li>*:credential-store:*:*:1.0 (optional) Credential stores to resolve credentials </li>
 </ul>
 <div class="fragment"><div class="line">var logger = <span class="keyword">new</span> Logger();</div><div class="line">logger.Configure(ConfigParams.FromTuples(</div><div class="line"><span class="stringliteral">&quot;stream&quot;</span>, <span class="stringliteral">&quot;mystream&quot;</span>,</div><div class="line"><span class="stringliteral">&quot;group&quot;</span>, <span class="stringliteral">&quot;mygroup&quot;</span>,</div><div class="line"><span class="stringliteral">&quot;connection.region&quot;</span>, <span class="stringliteral">&quot;us-east-1&quot;</span>,</div><div class="line"><span class="stringliteral">&quot;connection.access_id&quot;</span>, <span class="stringliteral">&quot;XXXXXXXXXXX&quot;</span>,</div><div class="line"><span class="stringliteral">&quot;connection.access_key&quot;</span>, <span class="stringliteral">&quot;XXXXXXXXXXX&quot;</span>     ));</div><div class="line"></div><div class="line">logger.SetReferences(References.FromTuples(</div><div class="line"><span class="keyword">new</span> Descriptor(<span class="stringliteral">&quot;pip-services&quot;</span>, <span class="stringliteral">&quot;logger&quot;</span>, <span class="stringliteral">&quot;console&quot;</span>, <span class="stringliteral">&quot;default&quot;</span>, <span class="stringliteral">&quot;1.0&quot;</span>), </div><div class="line"><span class="keyword">new</span> ConsoleLogger() ));</div><div class="line"></div><div class="line">logger.Open(<span class="stringliteral">&quot;123&quot;</span>);</div><div class="line"></div><div class="line">logger.SetLevel(LogLevel.debug);</div><div class="line"></div><div class="line">logger.Error(<span class="stringliteral">&quot;123&quot;</span>, ex, <span class="stringliteral">&quot;Error occured: %s&quot;</span>, ex.message);</div><div class="line">logger.Debug(<span class="stringliteral">&quot;123&quot;</span>, <span class="stringliteral">&quot;Everything is OK.&quot;</span>);</div></div><!-- fragment --> <p>See Counter, CachedCounters, CompositeCounters </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>

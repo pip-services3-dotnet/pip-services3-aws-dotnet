@@ -154,23 +154,23 @@ AmazonCloudWatchClient&#160;</td><td class="memItemRight" valign="bottom"><b>_cl
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Performance counters that periodically dumps counters to AWS Cloud Watch Metrics. </p>
 <h3>Configuration parameters</h3>
-<ul>
-<li>connections: <br />
-- discovery_key: (optional) a key to retrieve the connection from IDiscovery</li>
+<p>connections: <br />
+- discovery_key: (optional) a key to retrieve the connection from <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_connect_1_1_i_discovery.html">IDiscovery</a></p><ul>
 <li>region: (optional) AWS region</li>
 <li>credentials: <br />
-- store_key: (optional) a key to retrieve the credentials from ICredentialStore</li>
+- store_key: (optional) a key to retrieve the credentials from <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_auth_1_1_i_credential_store.html">ICredentialStore</a></li>
 <li>access_id: AWS access/client id</li>
 <li>access_key: AWS access/client id</li>
-<li>options:</li>
-<li>interval: interval in milliseconds to save current counters measurements(default: 5 mins)</li>
-<li>reset_timeout: timeout in milliseconds to reset the counters. 0 disables the reset(default: 0) <h3>References</h3>
-</li>
 </ul>
+<p>options:</p><ul>
+<li>interval: interval in milliseconds to save current counters measurements(default: 5 mins)</li>
+<li>reset_timeout: timeout in milliseconds to reset the counters. 0 disables the reset(default: 0)</li>
+</ul>
+<h3>References</h3>
 <ul>
-<li><code>*:context-info:*:*:1.0</code> (optional) ContextInfo to detect the context id and specify counters source</li>
-<li><code>*:discovery:*:*:1.0</code> (optional) IDiscovery services to resolve connections</li>
-<li><code>*:credential-store:*:*:1.0</code> (optional) Credential stores to resolve credentials </li>
+<li>*:context-info:*:*:1.0 (optional) <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/class_pip_services_1_1_components_1_1_info_1_1_context_info.html">ContextInfo</a> to detect the context id and specify counters source</li>
+<li>*:discovery:*:*:1.0 (optional) <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_connect_1_1_i_discovery.html">IDiscovery</a> services to resolve connections</li>
+<li>*:credential-store:*:*:1.0 (optional) Credential stores to resolve credentials </li>
 </ul>
 <div class="fragment"><div class="line">var counters = <span class="keyword">new</span> <a class="code" href="class_pip_services_1_1_aws_1_1_count_1_1_cloud_watch_counters.html#ae25fed619337f9060a7c9d5092e64f39">CloudWatchCounters</a>();</div><div class="line">counters.Configure(ConfigParams.FromTuples(</div><div class="line"><span class="stringliteral">&quot;connection.region&quot;</span>, <span class="stringliteral">&quot;us-east-1&quot;</span>,</div><div class="line"><span class="stringliteral">&quot;connection.access_id&quot;</span>, <span class="stringliteral">&quot;XXXXXXXXXXX&quot;</span>,</div><div class="line"><span class="stringliteral">&quot;connection.access_key&quot;</span>, <span class="stringliteral">&quot;XXXXXXXXXXX&quot;</span>  ));</div><div class="line"></div><div class="line">counters.SetReferences(References.fromTuples(</div><div class="line"><span class="keyword">new</span> Descriptor(<span class="stringliteral">&quot;pip-services&quot;</span>, <span class="stringliteral">&quot;logger&quot;</span>, <span class="stringliteral">&quot;console&quot;</span>, <span class="stringliteral">&quot;default&quot;</span>, <span class="stringliteral">&quot;1.0&quot;</span>), </div><div class="line"><span class="keyword">new</span> ConsoleLogger() ));</div><div class="line">counters.Open(<span class="stringliteral">&quot;123&quot;</span>);</div><div class="line"></div><div class="line">counters.Increment(<span class="stringliteral">&quot;mycomponent.mymethod.calls&quot;</span>);</div><div class="line">var timing = counters.BeginTiming(<span class="stringliteral">&quot;mycomponent.mymethod.exec_time&quot;</span>);</div><div class="line"><span class="keywordflow">try</span> {</div><div class="line">...</div><div class="line">} <span class="keywordflow">finally</span> {</div><div class="line">timing.EndTiming();</div><div class="line">}</div><div class="line">counters.Dump();</div></div><!-- fragment --> <p>See Counter, CachedCounters, CompositeCounters </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>

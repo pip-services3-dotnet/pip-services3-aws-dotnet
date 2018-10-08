@@ -11,22 +11,24 @@ namespace PipServices.Aws.Connect
     /// validate them and compose a AwsConnectionParams value.
     /// 
     /// ### Configuration parameters ###
-    /// - connections:                   
-    /// - discovery_key:               (optional) a key to retrieve the connection from IDiscovery
+    /// 
+    /// connections:                   
+    /// - discovery_key:               (optional) a key to retrieve the connection from <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_connect_1_1_i_discovery.html">IDiscovery</a>
     /// - region:                      (optional) AWS region
     /// - partition:                   (optional) AWS partition
     /// - service:                     (optional) AWS service
     /// - resource_type:               (optional) AWS resource type
     /// - resource:                    (optional) AWS resource id
     /// - arn:                         (optional) AWS resource ARN
-    /// - credentials:    
-    /// - store_key:                   (optional) a key to retrieve the credentials from ICredentialStore
+    /// 
+    /// credentials:    
+    /// - store_key:                   (optional) a key to retrieve the credentials from <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_auth_1_1_i_credential_store.html">ICredentialStore</a>
     /// - access_id:                   AWS access/client id
     /// - access_key:                  AWS access/client id
     /// 
     /// ### References ###
-    /// - <code>\*:discovery:\*:\*:1.0</code>         (optional) IDiscovery services to resolve connections
-    /// - <code>\*:credential-store:\*:\*:1.0</code>  (optional) Credential stores to resolve credentials
+    /// - *:discovery:*:*:1.0         (optional) <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_connect_1_1_i_discovery.html">IDiscovery</a> services to resolve connections
+    /// - *:credential-store:*:*:1.0  (optional) Credential stores to resolve credentials
     /// </summary>
     /// <example>
     /// <code>

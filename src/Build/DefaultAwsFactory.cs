@@ -9,8 +9,10 @@ namespace PipServices.Aws.Build
     /// <summary>
     /// Creates AWS components by their descriptors.
     /// </summary>
-    /// See <see cref="CloudWatchCounters"/>, <see cref="CloudWatchLogger"/>, 
-    /// <see cref="SqsMessageQueue"/>, <see cref="SqsMessageQueueFactory"/>
+    /// See <a href="https://rawgit.com/pip-services-dotnet/pip-services-aws-dotnet/master/doc/api/class_pip_services_1_1_aws_1_1_count_1_1_cloud_watch_counters.html">CloudWatchCounters</a>, 
+    /// <a href="https://rawgit.com/pip-services-dotnet/pip-services-aws-dotnet/master/doc/api/class_pip_services_1_1_aws_1_1_log_1_1_cloud_watch_logger.html">CloudWatchLogger</a>, 
+    /// <a href="https://rawgit.com/pip-services-dotnet/pip-services-aws-dotnet/master/doc/api/class_pip_services_1_1_aws_1_1_queues_1_1_sqs_message_queue.html">SqsMessageQueue</a>, 
+    /// <a href="https://rawgit.com/pip-services-dotnet/pip-services-aws-dotnet/master/doc/api/class_pip_services_1_1_aws_1_1_queues_1_1_sqs_message_queue_factory.html">SqsMessageQueueFactory</a>
     public class DefaultAwsFactory: Factory
     {
         public static Descriptor Descriptor = new Descriptor("pip-services", "factory", "aws", "default", "1.0");
