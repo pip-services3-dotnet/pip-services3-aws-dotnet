@@ -1,9 +1,9 @@
 ﻿using System;
-using PipServices.Commons.Config;
-using PipServices.Commons.Convert;
+using PipServices3.Commons.Config;
+using PipServices3.Commons.Convert;
 using Xunit;
 
-namespace PipServices.Aws.Log
+namespace PipServices3.Aws.Log
 {
     public sealed class CloudWatchLoggerTest : IDisposable
     {

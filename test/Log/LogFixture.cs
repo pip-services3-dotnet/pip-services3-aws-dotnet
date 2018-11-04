@@ -1,8 +1,8 @@
 ﻿using System;
-using PipServices.Components.Log;
+using PipServices3.Components.Log;
 using Xunit;
 
-namespace PipServices.Aws.Log
+namespace PipServices3.Aws.Log
 {
     public sealed class LoggerFixture
     {

@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Amazon;
 using Amazon.SQS;
 using Amazon.SQS.Model;
-using PipServices.Aws.Connect;
-using PipServices.Commons.Config;
-using PipServices.Commons.Convert;
-using PipServices.Commons.Errors;
-using PipServices.Components.Auth;
-using PipServices.Components.Connect;
-using PipServices.Messaging.Queues;
+using PipServices3.Aws.Connect;
+using PipServices3.Commons.Config;
+using PipServices3.Commons.Convert;
+using PipServices3.Commons.Errors;
+using PipServices3.Components.Auth;
+using PipServices3.Components.Connect;
+using PipServices3.Messaging.Queues;
 
-namespace PipServices.Aws.Queues
+namespace PipServices3.Aws.Queues
 {
     public class SqsMessageQueue : MessageQueue
     {

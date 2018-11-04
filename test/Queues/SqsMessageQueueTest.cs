@@ -1,9 +1,9 @@
-﻿using PipServices.Commons.Config;
-using PipServices.Commons.Convert;
+﻿using PipServices3.Commons.Config;
+using PipServices3.Commons.Convert;
 using System;
 using Xunit;
 
-namespace PipServices.Aws.Queues
+namespace PipServices3.Aws.Queues
 {
     public class SqsMessageQueueTest: IDisposable
     {

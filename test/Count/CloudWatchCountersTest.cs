@@ -1,11 +1,11 @@
 ﻿using System;
-using PipServices.Commons.Config;
-using PipServices.Commons.Convert;
-using PipServices.Commons.Refer;
-using PipServices.Components.Info;
+using PipServices3.Commons.Config;
+using PipServices3.Commons.Convert;
+using PipServices3.Commons.Refer;
+using PipServices3.Components.Info;
 using Xunit;
 
-namespace PipServices.Aws.Count
+namespace PipServices3.Aws.Count
 {
     public sealed class CloudWatchCountersTest : IDisposable
     {
@@ -39,8 +39,8 @@ namespace PipServices.Aws.Count
                 contextInfo.Description = "This is a test container";
 
                 var references = References.FromTuples(
-                    new Descriptor("pip-services", "context-info", "default", "default", "1.0"), contextInfo,
-                    new Descriptor("pip-services", "counters", "prometheus", "default", "1.0"), _counters
+                    new Descriptor("pip-services3", "context-info", "default", "default", "1.0"), contextInfo,
+                    new Descriptor("pip-services3", "counters", "prometheus", "default", "1.0"), _counters
                 );
                 _counters.SetReferences(references);
 

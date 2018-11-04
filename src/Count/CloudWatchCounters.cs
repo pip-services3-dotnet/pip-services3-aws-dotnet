@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Amazon;
 using Amazon.CloudWatch;
 using Amazon.CloudWatch.Model;
-using PipServices.Aws.Connect;
-using PipServices.Commons.Config;
-using PipServices.Commons.Convert;
-using PipServices.Commons.Refer;
-using PipServices.Commons.Run;
-using PipServices.Components.Count;
-using PipServices.Components.Info;
-using PipServices.Components.Log;
+using PipServices3.Aws.Connect;
+using PipServices3.Commons.Config;
+using PipServices3.Commons.Convert;
+using PipServices3.Commons.Refer;
+using PipServices3.Commons.Run;
+using PipServices3.Components.Count;
+using PipServices3.Components.Info;
+using PipServices3.Components.Log;
 
-namespace PipServices.Aws.Count
+namespace PipServices3.Aws.Count
 {
     /// <summary>
     /// Performance counters that periodically dumps counters to AWS Cloud Watch Metrics.
@@ -21,10 +21,10 @@ namespace PipServices.Aws.Count
     /// ### Configuration parameters ###
     /// 
     /// connections:
-    /// - discovery_key:         (optional) a key to retrieve the connection from <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_connect_1_1_i_discovery.html">IDiscovery</a>
+    /// - discovery_key:         (optional) a key to retrieve the connection from <a href="https://rawgit.com/pip-services3-dotnet/pip-services3-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_connect_1_1_i_discovery.html">IDiscovery</a>
     /// - region:                (optional) AWS region
     /// - credentials:    
-    /// - store_key:             (optional) a key to retrieve the credentials from <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_auth_1_1_i_credential_store.html">ICredentialStore</a>
+    /// - store_key:             (optional) a key to retrieve the credentials from <a href="https://rawgit.com/pip-services3-dotnet/pip-services3-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_auth_1_1_i_credential_store.html">ICredentialStore</a>
     /// - access_id:             AWS access/client id
     /// - access_key:            AWS access/client id
     /// 
@@ -34,8 +34,8 @@ namespace PipServices.Aws.Count
     /// 
     /// ### References ###
     /// 
-    /// - *:context-info:*:*:1.0      (optional) <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/class_pip_services_1_1_components_1_1_info_1_1_context_info.html">ContextInfo</a> to detect the context id and specify counters source
-    /// - *:discovery:*:*:1.0         (optional) <a href="https://rawgit.com/pip-services-dotnet/pip-services-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_connect_1_1_i_discovery.html">IDiscovery</a> services to resolve connections
+    /// - *:context-info:*:*:1.0      (optional) <a href="https://rawgit.com/pip-services3-dotnet/pip-services3-components-dotnet/master/doc/api/class_pip_services_1_1_components_1_1_info_1_1_context_info.html">ContextInfo</a> to detect the context id and specify counters source
+    /// - *:discovery:*:*:1.0         (optional) <a href="https://rawgit.com/pip-services3-dotnet/pip-services3-components-dotnet/master/doc/api/interface_pip_services_1_1_components_1_1_connect_1_1_i_discovery.html">IDiscovery</a> services to resolve connections
     /// - *:credential-store:*:*:1.0  (optional) Credential stores to resolve credentials
     /// </summary>
     /// <example>
@@ -47,7 +47,7 @@ namespace PipServices.Aws.Count
     /// "connection.access_key", "XXXXXXXXXXX"  ));
     /// 
     /// counters.SetReferences(References.fromTuples(
-    /// new Descriptor("pip-services", "logger", "console", "default", "1.0"), 
+    /// new Descriptor("pip-services3", "logger", "console", "default", "1.0"), 
     /// new ConsoleLogger() ));
     /// counters.Open("123");
     /// 
@@ -100,7 +100,7 @@ namespace PipServices.Aws.Count
             _connectionResolver.SetReferences(references);
 
             var contextInfo = references.GetOneOptional<ContextInfo>(
-                new Descriptor("pip-services", "context-info", "default", "*", "1.0"));
+                new Descriptor("pip-services3", "context-info", "default", "*", "1.0"));
             if (contextInfo != null && string.IsNullOrEmpty(_source))
                 _source = contextInfo.Name;
             if (contextInfo != null && string.IsNullOrEmpty(_instance))

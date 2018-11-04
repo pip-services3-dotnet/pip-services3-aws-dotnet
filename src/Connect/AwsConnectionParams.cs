@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using PipServices.Commons.Config;
-using PipServices.Commons.Data;
-using PipServices.Commons.Errors;
-using PipServices.Components.Auth;
-using PipServices.Components.Connect;
+using PipServices3.Commons.Config;
+using PipServices3.Commons.Data;
+using PipServices3.Commons.Errors;
+using PipServices3.Components.Auth;
+using PipServices3.Components.Connect;
 
-namespace PipServices.Aws.Connect
+namespace PipServices3.Aws.Connect
 {
     /// <summary>
     /// Contains connection parameters to authenticate against Amazon Web Services (AWS)

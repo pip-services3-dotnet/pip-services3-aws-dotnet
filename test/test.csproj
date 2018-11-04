@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
-    <RootNamespace>PipServices.Aws</RootNamespace>
-    <AssemblyName>PipServices.Aws.Test</AssemblyName>
+    <RootNamespace>PipServices3.Aws</RootNamespace>
+    <AssemblyName>PipServices3.Aws.Test</AssemblyName>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />

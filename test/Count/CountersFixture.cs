@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
-using PipServices.Components.Count;
+using PipServices3.Components.Count;
 using Xunit;
 
-namespace PipServices.Aws.Count
+namespace PipServices3.Aws.Count
 {
     public sealed class CountersFixture
     {
