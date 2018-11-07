@@ -11,7 +11,7 @@ It provides components to integrate with AWS infrastructure services
 Quick Links:
 
 * [Downloads](https://github.com/pip-services3-dotnet/pip-services3-aws-dotnet/blob/master/doc/Downloads.md)
-* [API Reference](https://rawgit.com/pip-services3-dotnet/pip-services3-aws-dotnet/master/doc/api/index.html)
+* [API Reference](https://pip-services3-dotnet.github.io/pip-services3-aws-dotnet/)
 * [Building and Testing](https://github.com/pip-services3-dotnet/pip-services3-aws-dotnet/blob/master/doc/Development.md)
 * [Contributing](https://github.com/pip-services3-dotnet/pip-services3-aws-dotnet/blob/master/doc/Development.md/#contrib)
 
