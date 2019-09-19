@@ -1,5 +1,9 @@
 # AWS specific components for Pip.Services in .NET Changelog
 
+## <a name="3.0.5"></a> 3.0.5 (2019-09-19)
+# Features
+* **connect** Extended possible param name list of AccessKey in AwsConnectionParams
+
 ## <a name="3.0.0"></a> 3.0.0 (2018-08-23)
 
 # Features

@@ -58,5 +58,45 @@ namespace PipServices3.Aws.Connect
             Assert.Equal("1234", connection.AccessId);
             Assert.Equal("ABCDEF", connection.AccessKey);
         }
+        
+        [Fact]
+        public void TestComposeArnWithAnotherAccessKeyName()
+        {
+            var connection = AwsConnectionParams.FromConfig(
+                ConfigParams.FromTuples(
+                    "connection.service", "lambda",
+                    "connection.region", "us-east-1",
+                    "connection.account", "12342342332",
+                    "connection.resource_type", "function",
+                    "connection.resource", "pip-services3-dummies",
+                    "credential.access_id", "1234",
+                    "credential.secret_key", "ABCDEF"
+                )
+            );
+
+            Assert.Equal("arn:aws:lambda:us-east-1:12342342332:function:pip-services3-dummies", connection.Arn);
+            Assert.Equal("1234", connection.AccessId);
+            Assert.Equal("ABCDEF", connection.AccessKey);
+        }
+        
+        [Fact]
+        public void TestComposeArnWithAnotherCredentialsParamNames()
+        {
+            var connection = AwsConnectionParams.FromConfig(
+                ConfigParams.FromTuples(
+                    "connection.service", "lambda",
+                    "connection.region", "us-east-1",
+                    "connection.account", "12342342332",
+                    "connection.resource_type", "function",
+                    "connection.resource", "pip-services3-dummies",
+                    "credential.client_id", "1234",
+                    "credential.client_key", "ABCDEF"
+                )
+            );
+
+            Assert.Equal("arn:aws:lambda:us-east-1:12342342332:function:pip-services3-dummies", connection.Arn);
+            Assert.Equal("1234", connection.AccessId);
+            Assert.Equal("ABCDEF", connection.AccessKey);
+        }
     }
 }

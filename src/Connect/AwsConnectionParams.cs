@@ -198,7 +198,12 @@ namespace PipServices3.Aws.Connect
         /// </summary>
         public string AccessKey
         {
-            get { return GetAsNullableString("access_key") ?? GetAsNullableString("client_key"); }
+            get {
+                var accessKey = GetAsNullableString("access_key");
+                accessKey = accessKey ?? GetAsNullableString("client_key");
+                accessKey = accessKey ?? GetAsNullableString("secret_key");
+                return accessKey;
+            }
             set { base["access_key"] = value; }
         }
 
