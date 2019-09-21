@@ -247,7 +247,7 @@ namespace PipServices3.Aws.Queues
                 QueueUrl = _queue,
                 WaitTimeSeconds = 0,
                 VisibilityTimeout = 0,
-                MaxNumberOfMessages = 1
+                MaxNumberOfMessages = messageCount
             };
             var response = await _client.ReceiveMessageAsync(request, _cancel.Token);
 
