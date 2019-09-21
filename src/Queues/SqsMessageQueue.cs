@@ -438,14 +438,14 @@ namespace PipServices3.Aws.Queues
             {
                 while (true)
                 {
-                    var messages = await PeekBatchAsync(correlationId, 100);
+                    var messages = await PeekBatchAsync(correlationId, 10);
 
                     foreach (var message in messages)
                     {
                         await CompleteAsync(message);
                     }
 
-                    if (messages.Count < 90) break;
+                    if (messages.Count < 9) break;
                 }
             }
 
