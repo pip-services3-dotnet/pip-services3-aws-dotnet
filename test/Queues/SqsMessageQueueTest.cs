@@ -5,39 +5,30 @@ using Xunit;
 
 namespace PipServices3.Aws.Queues
 {
-    public class SqsMessageQueueTest: IDisposable
+    public class SqsMessageQueueTest : IDisposable
     {
         private bool _enabled;
         private SqsMessageQueue _queue;
         MessageQueueFixture _fixture;
 
+        private string AWS_ENABLED;
+        private string AWS_REGION;
+        private string AWS_ACCOUNT;
+        private string AWS_ACCESS_ID;
+        private string AWS_ACCESS_KEY;
+        private string AWS_QUEUE_ARN;
+        private string AWS_QUEUE;
+        private string AWS_DEAD_QUEUE;
+
         public SqsMessageQueueTest()
         {
-            var AWS_ENABLED = Environment.GetEnvironmentVariable("AWS_ENABLED") ?? "true";
-            var AWS_REGION = Environment.GetEnvironmentVariable("AWS_REGION") ?? "us-east-1";
-            var AWS_ACCOUNT = Environment.GetEnvironmentVariable("AWS_ACCOUNT");
-            var AWS_ACCESS_ID = Environment.GetEnvironmentVariable("AWS_ACCESS_ID") ?? "AKIAI2B3PGHEAAK4BPUQ";
-            var AWS_ACCESS_KEY = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY") ?? "zQZGX0vGL6OD936fCcP1v6YmpiSdW28oUcezAnb7";
-            var AWS_QUEUE_ARN = Environment.GetEnvironmentVariable("AWS_QUEUE_ARN");
+            AWS_ENABLED = Environment.GetEnvironmentVariable("AWS_ENABLED") ?? "true";
+            AWS_REGION = Environment.GetEnvironmentVariable("AWS_REGION") ?? "us-east-1";
+            AWS_ACCOUNT = Environment.GetEnvironmentVariable("AWS_ACCOUNT");
+            AWS_ACCESS_ID = Environment.GetEnvironmentVariable("AWS_ACCESS_ID");
+            AWS_ACCESS_KEY = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY");
 
             _enabled = BooleanConverter.ToBoolean(AWS_ENABLED);
-
-            if (_enabled)
-            {
-                _queue = new SqsMessageQueue("TestQueue");
-                _queue.Configure(ConfigParams.FromTuples(
-                    "connection.uri", AWS_QUEUE_ARN,
-                    "connection.region", AWS_REGION,
-                    "connection.account", AWS_ACCOUNT,
-                    "credential.access_id", AWS_ACCESS_ID,
-                    "credential.access_key", AWS_ACCESS_KEY
-                ));
-
-                _queue.OpenAsync(null).Wait();
-                _queue.ClearAsync(null).Wait();
-
-                _fixture = new MessageQueueFixture(_queue);
-            }
         }
 
         public void Dispose()
@@ -46,67 +37,146 @@ namespace PipServices3.Aws.Queues
                 _queue.CloseAsync(null).Wait();
         }
 
+        private void ConfigureStandardQueue()
+        {
+            AWS_QUEUE_ARN = Environment.GetEnvironmentVariable("AWS_QUEUE_ARN");
+            AWS_QUEUE = Environment.GetEnvironmentVariable("AWS_QUEUE") ?? "TestQueue";
+            AWS_DEAD_QUEUE = Environment.GetEnvironmentVariable("AWS_DEAD_QUEUE") ?? "TestQueueDLQ";
+
+            if (_enabled)
+            {
+                _queue = new SqsMessageQueue(AWS_QUEUE);
+                _queue.Configure(ConfigParams.FromTuples(
+                    "connection.uri", AWS_QUEUE_ARN,
+                    "connection.region", AWS_REGION,
+                    "connection.account", AWS_ACCOUNT,
+                    "credential.access_id", AWS_ACCESS_ID,
+                    "credential.access_key", AWS_ACCESS_KEY,
+                    "connection.queue", AWS_QUEUE,
+                    "connection.dead_queue", AWS_DEAD_QUEUE
+                ));
+
+                _queue.OpenAsync(null).Wait();
+                _queue.ClearAsync(null).Wait();
+
+                _fixture = new MessageQueueFixture(_queue, AWS_QUEUE.EndsWith(".fifo"));
+            }
+        }
+
+        private void ConfigureFifoTest()
+        {
+            AWS_QUEUE_ARN = Environment.GetEnvironmentVariable("AWS_FIFO_QUEUE_ARN");
+            AWS_QUEUE = Environment.GetEnvironmentVariable("AWS_FIFO_QUEUE") ?? "TestQueue.fifo";
+            AWS_DEAD_QUEUE = Environment.GetEnvironmentVariable("AWS_DEAD_FIFO_QUEUE") ?? "TestQueueDLQ.fifo";
+
+            if (_enabled)
+            {
+                _queue = new SqsMessageQueue(AWS_QUEUE);
+                _queue.Configure(ConfigParams.FromTuples(
+                    "connection.uri", AWS_QUEUE_ARN,
+                    "connection.region", AWS_REGION,
+                    "connection.account", AWS_ACCOUNT,
+                    "credential.access_id", AWS_ACCESS_ID,
+                    "credential.access_key", AWS_ACCESS_KEY,
+                    "connection.queue", AWS_QUEUE,
+                    "connection.dead_queue", AWS_DEAD_QUEUE
+                ));
+
+                _queue.OpenAsync(null).Wait();
+                _queue.ClearAsync(null).Wait();
+
+                _fixture = new MessageQueueFixture(_queue, AWS_QUEUE.EndsWith(".fifo"));
+            }
+        }
+
         [Fact]
         public void TestAmazonSqsSendReceiveMessage()
         {
             if (_enabled)
+            {
+                ConfigureStandardQueue();
                 _fixture.TestSendReceiveMessageAsync().Wait();
+            }
         }
 
         [Fact]
         public void TestAmazonSqsReceiveSendMessage()
         {
             if (_enabled)
+            {
+                ConfigureStandardQueue();
                 _fixture.TestReceiveSendMessageAsync().Wait();
+            }
         }
 
         [Fact]
         public void TestAmazonSqsReceiveAndComplete()
         {
             if (_enabled)
+            {
+                ConfigureStandardQueue();
                 _fixture.TestReceiveAndCompleteMessageAsync().Wait();
+            }
         }
 
         [Fact]
         public void TestAmazonSqsReceiveAndAbandon()
         {
             if (_enabled)
+            {
+                ConfigureStandardQueue();
                 _fixture.TestReceiveAndAbandonMessageAsync().Wait();
+            }
         }
 
         [Fact]
         public void TestAmazonSqsSendPeekMessage()
         {
             if (_enabled)
+            {
+                ConfigureStandardQueue();
                 _fixture.TestSendPeekMessageAsync().Wait();
+            }
         }
 
         [Fact]
         public void TestAmazonSqsPeekNoMessage()
         {
             if (_enabled)
+            {
+                ConfigureStandardQueue();
                 _fixture.TestPeekNoMessageAsync().Wait();
+            }
         }
 
         [Fact]
         public void TestAmazonSqsOnMessage()
         {
             if (_enabled)
+            {
+                ConfigureStandardQueue();
                 _fixture.TestOnMessageAsync().Wait();
+            }
         }
 
         [Fact]
         public void TestAmazonSqsMoveToDeadMessage()
         {
             if (_enabled)
+            {
+                ConfigureStandardQueue();
                 _fixture.TestMoveToDeadMessageAsync().Wait();
+            }
         }
 
         [Fact]
         public void TestAmazonSqsMessageCount()
         {
             if (_enabled)
+            {
+                ConfigureStandardQueue();
                 _fixture.TestMessageCountAsync().Wait();
+            }
         }
     }
 }

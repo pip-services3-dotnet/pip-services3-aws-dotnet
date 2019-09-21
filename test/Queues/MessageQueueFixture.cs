@@ -8,10 +8,12 @@ namespace PipServices3.Aws.Queues
     public class MessageQueueFixture
     {
         private IMessageQueue _queue;
+        private bool _isFifo;
 
-        public MessageQueueFixture(IMessageQueue queue)
+        public MessageQueueFixture(IMessageQueue queue, bool isFifo)
         {
             _queue = queue;
+            _isFifo = isFifo;
         }
 
         public async Task TestSendReceiveMessageAsync()
@@ -70,8 +72,8 @@ namespace PipServices3.Aws.Queues
             Assert.Equal(envelope1.CorrelationId, envelope2.CorrelationId);
 
             await _queue.CompleteAsync(envelope2);
-            //envelope2 = await _queue.PeekAsync();
-            //Assert.IsNull(envelope2);
+            envelope2 = await _queue.PeekAsync(null);
+            Assert.Null(envelope2);
         }
 
         public async Task TestReceiveAndAbandonMessageAsync()
