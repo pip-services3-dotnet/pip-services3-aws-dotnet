@@ -23,6 +23,9 @@ namespace PipServices3.Aws.Queues
         private AmazonSQSClient _client;
         private string _queue;
         private string _deadQueue;
+        private bool _fifoQueue = false;
+        private bool _contentBasedDupication = false;
+        private bool _contentBasedDupicationDlq = false;
         private CancellationTokenSource _cancel = new CancellationTokenSource();
 
         public SqsMessageQueue(string name = null)
@@ -54,6 +57,47 @@ namespace PipServices3.Aws.Queues
             Interval = config.GetAsLongWithDefault("interval", Interval);
         }
 
+        private async Task<IDictionary<string, string>> GetQueueAttributesAsync(string correlationId, List<string> attributes, string queueUrl)
+        {
+            var attributeMap = new Dictionary<string, string>();
+
+            try
+            {
+                var response = await _client.GetQueueAttributesAsync(new GetQueueAttributesRequest(queueUrl, attributes));
+
+                foreach (var attibute in response.Attributes)
+                    attributeMap.Add(attibute.Key, attibute.Value);
+            }
+            catch (InvalidAttributeNameException ex)
+            {
+                // Ignore invalid name exception
+            }
+
+            return attributeMap;
+        }
+
+        private SendMessageRequest CreateSendMessageRequest(MessageEnvelope message, bool contentBasedDupication, string queueUrl)
+        {
+            var content = JsonConverter.ToJson(message);
+
+            var request = new SendMessageRequest()
+            {
+                QueueUrl = queueUrl,
+                MessageBody = content
+            };
+
+            if (_fifoQueue)
+            {
+                // A message group id is required for a fifo queue message
+                request.MessageGroupId = message.MessageType;
+
+                // A message deduplication id is required if content based duplication is turned off for the fifo queue.
+                if (!contentBasedDupication) request.MessageDeduplicationId = message.MessageId;
+            }
+
+            return request;
+        }
+
         private void CheckOpened(string correlationId)
         {
             if (_queue == null)
@@ -77,6 +121,9 @@ namespace PipServices3.Aws.Queues
             awsConnection.Resource = queueName;
             var deadQueueName = awsConnection.Get("dead_queue");
 
+            // Determine if a fifo queue is being used
+            _fifoQueue = queueName.EndsWith(".fifo", StringComparison.OrdinalIgnoreCase) ? true : false;
+
             // Validate connection params
             var err = awsConnection.Validate(correlationId);
             if (err != null) throw err;
@@ -96,7 +143,12 @@ namespace PipServices3.Aws.Queues
                 try
                 {
                     // Create queue if it doesn't exist
-                    await _client.CreateQueueAsync(queueName);
+                    var queueRequest = new CreateQueueRequest(queueName);
+
+                    if (_fifoQueue)
+                        queueRequest.Attributes.Add("FifoQueue", "true");
+
+                    await _client.CreateQueueAsync(queueRequest);
                 }
                 catch (QueueNameExistsException)
                 {
@@ -107,7 +159,14 @@ namespace PipServices3.Aws.Queues
                 {
                     // Create dead queue if it doesn't exist
                     if (!string.IsNullOrEmpty(deadQueueName))
-                        await _client.CreateQueueAsync(deadQueueName);
+                    {
+                        var deadQueueRequest = new CreateQueueRequest(deadQueueName);
+
+                        if (_fifoQueue)
+                            deadQueueRequest.Attributes.Add("FifoQueue", "true");
+
+                        await _client.CreateQueueAsync(deadQueueRequest);
+                    }
                 }
                 catch (QueueNameExistsException)
                 {
@@ -117,10 +176,22 @@ namespace PipServices3.Aws.Queues
                 var response = await _client.GetQueueUrlAsync(queueName);
                 _queue = response.QueueUrl;
 
+                if (_fifoQueue)
+                {
+                    var temp = await GetQueueAttributesAsync(correlationId, new List<string>() { "ContentBasedDeduplication" }, _queue);
+                    _contentBasedDupication = BooleanConverter.ToBooleanWithDefault(temp["ContentBasedDeduplication"], _contentBasedDupication);
+                }
+
                 if (!string.IsNullOrEmpty(deadQueueName))
                 {
                     response = await _client.GetQueueUrlAsync(deadQueueName);
                     _deadQueue = response.QueueUrl;
+
+                    if (_fifoQueue)
+                    {
+                        var temp = await GetQueueAttributesAsync(correlationId, new List<string>() { "ContentBasedDeduplication" }, _deadQueue);
+                        _contentBasedDupicationDlq = BooleanConverter.ToBooleanWithDefault(temp["ContentBasedDeduplication"], _contentBasedDupicationDlq);
+                    }
                 }
                 else
                 {
@@ -195,16 +266,8 @@ namespace PipServices3.Aws.Queues
         public override async Task SendAsync(string correlationId, MessageEnvelope message)
         {
             CheckOpened(correlationId);
-            var content = JsonConverter.ToJson(message);
 
-            var request = new SendMessageRequest()
-            {
-                QueueUrl = _queue,
-                //MessageDeduplicationId = message.MessageId,
-                //MessageGroupId = message.MessageType,
-                MessageBody = content
-            };
-            await _client.SendMessageAsync(request, _cancel.Token);
+            await _client.SendMessageAsync(CreateSendMessageRequest(message, _contentBasedDupication, _queue), _cancel.Token);
 
             _counters.IncrementOne("queue." + Name + ".sent_messages");
             _logger.Debug(message.CorrelationId, "Sent message {0} via {1}", message, this);
@@ -357,8 +420,7 @@ namespace PipServices3.Aws.Queues
                 // Resend message to dead queue if it is defined
                 if (_deadQueue != null)
                 {
-                    var content = JsonConverter.ToJson(message);
-                    await _client.SendMessageAsync(_deadQueue, content, _cancel.Token);
+                    await _client.SendMessageAsync(CreateSendMessageRequest(message, _contentBasedDupicationDlq, _deadQueue), _cancel.Token);
                 }
                 else
                 {
