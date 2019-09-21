@@ -83,9 +83,28 @@ namespace PipServices3.Aws.Queues
                 ));
 
                 _queue.OpenAsync(null).Wait();
-                _queue.ClearAsync(null).Wait();
 
                 _fixture = new MessageQueueFixture(_queue, AWS_QUEUE.EndsWith(".fifo"));
+            }
+        }
+
+        [Fact]
+        public void TestAmazonSqsFifoQueue()
+        {
+            if (_enabled)
+            {
+                ConfigureFifoTest();
+
+                _fixture.TestMoveToDeadMessageAsync().Wait();
+                _fixture.TestReceiveAndCompleteMessageAsync().Wait();
+                _fixture.TestPeekNoMessageAsync().Wait();
+
+                _fixture.TestSendReceiveMessageAsync().Wait();
+                _fixture.TestReceiveSendMessageAsync().Wait();
+                _fixture.TestReceiveAndAbandonMessageAsync().Wait();
+                _fixture.TestSendPeekMessageAsync().Wait();
+                _fixture.TestMessageCountAsync().Wait();
+                _fixture.TestOnMessageAsync().Wait();
             }
         }
 
