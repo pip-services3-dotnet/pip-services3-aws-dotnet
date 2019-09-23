@@ -267,6 +267,9 @@ namespace PipServices3.Aws.Queues
         {
             CheckOpened(correlationId);
 
+            // Set the message sent time
+            message.SentTime = DateTime.UtcNow;
+
             await _client.SendMessageAsync(CreateSendMessageRequest(message, _contentBasedDupication, _queue), _cancel.Token);
 
             _counters.IncrementOne("queue." + Name + ".sent_messages");
