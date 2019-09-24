@@ -25,8 +25,8 @@ namespace PipServices3.Aws.Queues
             AWS_ENABLED = Environment.GetEnvironmentVariable("AWS_ENABLED") ?? "true";
             AWS_REGION = Environment.GetEnvironmentVariable("AWS_REGION") ?? "us-east-1";
             AWS_ACCOUNT = Environment.GetEnvironmentVariable("AWS_ACCOUNT");
-            AWS_ACCESS_ID = Environment.GetEnvironmentVariable("AWS_ACCESS_ID");
-            AWS_ACCESS_KEY = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY");
+            AWS_ACCESS_ID = Environment.GetEnvironmentVariable("AWS_ACCESS_ID") ?? "AKIAI2B3PGHEAAK4BPUQ";
+            AWS_ACCESS_KEY = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY") ?? "zQZGX0vGL6OD936fCcP1v6YmpiSdW28oUcezAnb7";
 
             _enabled = BooleanConverter.ToBoolean(AWS_ENABLED);
 
