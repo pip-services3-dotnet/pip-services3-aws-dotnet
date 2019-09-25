@@ -7,13 +7,13 @@ namespace PipServices3.Aws.Queues
     public class SqsMessageQueueFactory : Factory, IConfigurable
     {
         public static readonly Descriptor Descriptor = new Descriptor("pip-services3-aws", "factory", "message-queue", "sqs", "1.0");
-        public static readonly Descriptor MemoryQueueDescriptor = new Descriptor("pip-services3-aws", "message-queue", "sqs", "*", "*");
+        public static readonly Descriptor SqsMessageQueueDescriptor = new Descriptor("pip-services3-aws", "message-queue", "sqs", "*", "*");
 
         private ConfigParams _config;
 
         public SqsMessageQueueFactory()
         {
-            Register(MemoryQueueDescriptor, (locator) => {
+            Register(SqsMessageQueueDescriptor, (locator) => {
                 Descriptor descriptor = (Descriptor)locator;
                 var queue = new SqsMessageQueue(descriptor.Name);
                 if (_config != null)
