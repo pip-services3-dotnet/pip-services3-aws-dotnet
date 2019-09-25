@@ -22,3 +22,4 @@ The .NET version of Pip.Services is created and maintained by:
 
 Many thanks to contibutors, who put their time and talant into making this project better:
 - **Andrew Harrington**, Kyrio
+- **Alan Joyce**, Kyrio

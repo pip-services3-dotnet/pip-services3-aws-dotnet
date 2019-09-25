@@ -1,5 +1,9 @@
 # AWS specific components for Pip.Services in .NET Changelog
 
+## <a name="3.0.6"></a> 3.0.6 (2019-09-25)
+# Features
+* **queues** Added the logic for creating and sending messages using a FIFO queues (by Alan Joyce)
+
 ## <a name="3.0.5"></a> 3.0.5 (2019-09-19)
 # Features
 * **connect** Extended possible param name list of AccessKey in AwsConnectionParams

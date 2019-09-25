@@ -6,7 +6,7 @@
     <AssemblyName>PipServices3.Aws</AssemblyName>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>3.0.5</Version>
+    <Version>3.0.6</Version>
     <Authors>Sergey Seroukhov, Alex Mazur, Alexey Dvoykin</Authors>
     <Copyright>Conceptual Vision Consulting LLC. 2017-2018</Copyright>
     <Description>AWS components for Pip.Services in .NET</Description>
