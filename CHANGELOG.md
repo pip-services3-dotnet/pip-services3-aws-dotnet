@@ -1,5 +1,9 @@
 # AWS specific components for Pip.Services in .NET Changelog
 
+## <a name="3.0.7"></a> 3.0.6 (2019-09-25)
+# Features
+* **queues** Added 'pip-services' descriptors
+
 ## <a name="3.0.6"></a> 3.0.6 (2019-09-25)
 # Features
 * **queues** Added the logic for creating and sending messages using a FIFO queues (by Alan Joyce)
