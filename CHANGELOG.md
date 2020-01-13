@@ -1,6 +1,6 @@
 # AWS specific components for Pip.Services in .NET Changelog
 
-## <a name="3.0.7"></a> 3.0.6 (2019-09-25)
+## <a name="3.0.7"></a> 3.0.7 (2020-01-13)
 # Features
 * **queues** Added 'pip-services' descriptors
 
