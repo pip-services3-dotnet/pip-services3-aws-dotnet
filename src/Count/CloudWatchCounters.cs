@@ -160,7 +160,7 @@ namespace PipServices3.Aws.Count
             var value = new MetricDatum
             {
                 MetricName = counter.Name,
-                Timestamp = time,
+                TimestampUtc = time.ToUniversalTime(),
                 Dimensions = dimensions,
                 Unit = StandardUnit.None
             };

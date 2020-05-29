@@ -28,7 +28,7 @@ namespace PipServices3.Aws.Connect
             Assert.Equal("s3", connection.Service);
             Assert.Equal("us-east-1", connection.Region);
             Assert.Equal("12342342332", connection.Account);
-            Assert.Equal(null, connection.ResourceType);
+            Assert.Null(connection.ResourceType);
             Assert.Equal("pip-services3-dummies", connection.Resource);
 
             connection.Arn = "arn:aws:lambda:us-east-1:12342342332:function/pip-services3-dummies";

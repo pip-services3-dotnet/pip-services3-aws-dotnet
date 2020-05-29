@@ -34,7 +34,7 @@ namespace PipServices3.Aws.Queues
                 Setup();
         }
 
-        public virtual void Setup()
+        protected virtual void Setup()
         {
             AWS_QUEUE_ARN = Environment.GetEnvironmentVariable("AWS_QUEUE_ARN");
             AWS_QUEUE = Environment.GetEnvironmentVariable("AWS_QUEUE") ?? "TestQueue";

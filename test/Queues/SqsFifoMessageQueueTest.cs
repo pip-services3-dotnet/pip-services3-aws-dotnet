@@ -9,7 +9,7 @@ namespace PipServices3.Aws.Queues
         {
         }
 
-        public override void Setup()
+        protected override void Setup()
         {
             AWS_QUEUE_ARN = Environment.GetEnvironmentVariable("AWS_FIFO_QUEUE_ARN");
             AWS_QUEUE = Environment.GetEnvironmentVariable("AWS_FIFO_QUEUE") ?? "TestQueue.fifo";

@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>PipServices3.Aws</RootNamespace>
     <AssemblyName>PipServices3.Aws</AssemblyName>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>3.0.7</Version>
+    <Version>3.1.0</Version>
     <Authors>Sergey Seroukhov, Alex Mazur, Alexey Dvoykin</Authors>
-    <Copyright>Conceptual Vision Consulting LLC. 2017-2018</Copyright>
+    <Copyright>Conceptual Vision Consulting LLC. 2017-2020</Copyright>
     <Description>AWS components for Pip.Services in .NET</Description>
     <Company>Conceptual Vision Consulting LLC.</Company>
     <Product>PipServices3.Aws</Product>
@@ -20,13 +20,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.SQS" Version="3.3.3.14" />
-    <PackageReference Include="AWSSDK.Core" Version="3.3.24.6" />
-    <PackageReference Include="AWSSDK.CloudWatchLogs" Version="3.3.5" />
-    <PackageReference Include="AWSSDK.CloudWatch" Version="3.3.6.9" />
-    <PackageReference Include="PipServices3.Commons" Version="3.0.6" />
-    <PackageReference Include="PipServices3.Components" Version="3.0.4" />
-    <PackageReference Include="PipServices3.Messaging" Version="3.0.2" />
+    <PackageReference Include="AWSSDK.SQS" Version="3.3.102.118" />
+    <PackageReference Include="AWSSDK.Core" Version="3.3.107.3" />
+    <PackageReference Include="AWSSDK.CloudWatchLogs" Version="3.3.102.12" />
+    <PackageReference Include="AWSSDK.CloudWatch" Version="3.3.107.31" />
+    <PackageReference Include="PipServices3.Commons" Version="3.1.0" />
+    <PackageReference Include="PipServices3.Components" Version="3.1.0" />
+    <PackageReference Include="PipServices3.Messaging" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>

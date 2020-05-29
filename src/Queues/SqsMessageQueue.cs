@@ -68,7 +68,7 @@ namespace PipServices3.Aws.Queues
                 foreach (var attibute in response.Attributes)
                     attributeMap.Add(attibute.Key, attibute.Value);
             }
-            catch (InvalidAttributeNameException ex)
+            catch (InvalidAttributeNameException)
             {
                 // Ignore invalid name exception
             }
