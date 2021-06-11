@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Amazon;
@@ -109,8 +111,14 @@ namespace PipServices3.Aws.Queues
             return _queue != null;
         }
 
-        public async override Task OpenAsync(string correlationId, ConnectionParams connection, CredentialParams credential)
+        public override async Task OpenAsync(string correlationId, List<ConnectionParams> connections, CredentialParams credential)
         {
+            var connection = connections?.FirstOrDefault();
+            if (connection == null)
+            {
+                throw new ArgumentNullException(nameof(connections));
+            }
+
             var awsConnection = new AwsConnectionParams(connection, credential);
 
             // Assign service name
@@ -214,21 +222,19 @@ namespace PipServices3.Aws.Queues
             await Task.Delay(0);
         }
 
-        public override long? MessageCount
+
+        public override async Task<long> ReadMessageCountAsync()
         {
-            get
+            CheckOpened(null);
+
+            var request = new GetQueueAttributesRequest()
             {
-                CheckOpened(null);
+                QueueUrl = _queue,
+                AttributeNames = new List<string>(new string[] { QueueAttributeName.ApproximateNumberOfMessages })
+            };
+            var response = _client.GetQueueAttributesAsync(request, _cancel.Token).Result;
 
-                var request = new GetQueueAttributesRequest()
-                {
-                    QueueUrl = _queue,
-                     AttributeNames = new List<string>(new string[] { QueueAttributeName.ApproximateNumberOfMessages })
-                };
-                var response = _client.GetQueueAttributesAsync(request, _cancel.Token).Result;
-
-                return response.ApproximateNumberOfMessages;
-            }
+            return response.ApproximateNumberOfMessages;
         }
 
         private MessageEnvelope ToMessage(Message envelope)
@@ -252,7 +258,7 @@ namespace PipServices3.Aws.Queues
             {
                 message = new MessageEnvelope
                 {
-                    Message = envelope.Body
+                    Message = Encoding.UTF8.GetBytes(envelope.Body)
                 };
             }
 
@@ -439,7 +445,7 @@ namespace PipServices3.Aws.Queues
             }
         }
 
-        public override async Task ListenAsync(string correlationId, Func<MessageEnvelope, IMessageQueue, Task> callback)
+        public override async Task ListenAsync(string correlationId, IMessageReceiver receiver)
         {
             CheckOpened(correlationId);
             _logger.Debug(correlationId, "Started listening messages at {0}", this);
@@ -466,7 +472,7 @@ namespace PipServices3.Aws.Queues
 
                     try
                     {
-                        await callback(message, this);
+                        await receiver.ReceiveMessageAsync(message, this);
                     }
                     catch (Exception ex)
                     {
