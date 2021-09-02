@@ -258,7 +258,7 @@ namespace PipServices3.Aws.Queues
             {
                 message = new MessageEnvelope
                 {
-                    Message = envelope.Body
+                    Message = Encoding.ASCII.GetBytes(envelope.Body)
                 };
             }
 
