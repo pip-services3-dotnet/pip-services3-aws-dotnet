@@ -1,6 +1,6 @@
 ﻿using PipServices3.Aws.Count;
 using PipServices3.Aws.Log;
-using PipServices3.Aws.Queues;
+//using PipServices3.Aws.Queues;
 using PipServices3.Commons.Refer;
 using PipServices3.Components.Build;
 
@@ -17,10 +17,10 @@ namespace PipServices3.Aws.Build
     {
         public static Descriptor Descriptor = new Descriptor("pip-services", "factory", "aws", "default", "1.0");
         public static Descriptor Descriptor3 = new Descriptor("pip-services3", "factory", "aws", "default", "1.0");
-        public static Descriptor SqsMessageQueueFactoryDescriptor = new Descriptor("pip-services", "factory", "message-queue", "sqs", "1.0");
-        public static Descriptor SqsMessageQueueFactory3Descriptor = new Descriptor("pip-services3", "factory", "message-queue", "sqs", "1.0");
-        public static Descriptor SqsMessageQueueDescriptor = new Descriptor("pip-services", "message-queue", "sqs", "*", "1.0");
-        public static Descriptor SqsMessageQueue3Descriptor = new Descriptor("pip-services3", "message-queue", "sqs", "*", "1.0");
+        //public static Descriptor SqsMessageQueueFactoryDescriptor = new Descriptor("pip-services", "factory", "message-queue", "sqs", "1.0");
+        //public static Descriptor SqsMessageQueueFactory3Descriptor = new Descriptor("pip-services3", "factory", "message-queue", "sqs", "1.0");
+        //public static Descriptor SqsMessageQueueDescriptor = new Descriptor("pip-services", "message-queue", "sqs", "*", "1.0");
+        //public static Descriptor SqsMessageQueue3Descriptor = new Descriptor("pip-services3", "message-queue", "sqs", "*", "1.0");
         public static Descriptor CloudWatchLoggerDescriptor = new Descriptor("pip-services", "logger", "cloudwatch", "*", "1.0");
         public static Descriptor CloudWatchLogger3Descriptor = new Descriptor("pip-services3", "logger", "cloudwatch", "*", "1.0");
         public static Descriptor CloudWatchCountersDescriptor = new Descriptor("pip-services", "counters", "cloudwatch", "*", "1.0");
@@ -31,10 +31,10 @@ namespace PipServices3.Aws.Build
         /// </summary>
         public DefaultAwsFactory()
         {
-            RegisterAsType(SqsMessageQueueFactoryDescriptor, typeof(SqsMessageQueueFactory));
-            RegisterAsType(SqsMessageQueueFactory3Descriptor, typeof(SqsMessageQueueFactory));
-            RegisterAsType(SqsMessageQueueDescriptor, typeof(SqsMessageQueue));
-            RegisterAsType(SqsMessageQueue3Descriptor, typeof(SqsMessageQueue));
+            //RegisterAsType(SqsMessageQueueFactoryDescriptor, typeof(SqsMessageQueueFactory));
+            //RegisterAsType(SqsMessageQueueFactory3Descriptor, typeof(SqsMessageQueueFactory));
+            //RegisterAsType(SqsMessageQueueDescriptor, typeof(SqsMessageQueue));
+            //RegisterAsType(SqsMessageQueue3Descriptor, typeof(SqsMessageQueue));
             RegisterAsType(CloudWatchLoggerDescriptor, typeof(CloudWatchLogger));
             RegisterAsType(CloudWatchLogger3Descriptor, typeof(CloudWatchLogger));
             RegisterAsType(CloudWatchCountersDescriptor, typeof(CloudWatchCounters));

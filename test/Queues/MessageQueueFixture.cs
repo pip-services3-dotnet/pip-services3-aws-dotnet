@@ -4,7 +4,7 @@ using Xunit;
 using PipServices3.Messaging.Queues;
 using PipServices3.Commons.Data;
 
-namespace PipServices3.Aws.Queues
+namespace PipServices3.Aws.Test.Queues
 {
     public class MessageQueueFixture
     {

@@ -1,11 +1,12 @@
 ﻿using System;
+using PipServices3.Aws.Count;
 using PipServices3.Commons.Config;
 using PipServices3.Commons.Convert;
 using PipServices3.Commons.Refer;
 using PipServices3.Components.Info;
 using Xunit;
 
-namespace PipServices3.Aws.Count
+namespace PipServices3.Aws.Test.Count
 {
     public sealed class CloudWatchCountersTest : IDisposable
     {
@@ -15,13 +16,12 @@ namespace PipServices3.Aws.Count
 
         public CloudWatchCountersTest()
         {
-            var AWS_ENABLED = Environment.GetEnvironmentVariable("AWS_ENABLED") ?? "true";
             var AWS_REGION = Environment.GetEnvironmentVariable("AWS_REGION") ?? "us-east-1";
             var AWS_ACCOUNT = Environment.GetEnvironmentVariable("AWS_ACCOUNT");
-            var AWS_ACCESS_ID = Environment.GetEnvironmentVariable("AWS_ACCESS_ID") ?? "AKIAI2B3PGHEAAK4BPUQ";
-            var AWS_ACCESS_KEY = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY") ?? "zQZGX0vGL6OD936fCcP1v6YmpiSdW28oUcezAnb7";
+            var AWS_ACCESS_ID = Environment.GetEnvironmentVariable("AWS_ACCESS_ID");
+            var AWS_ACCESS_KEY = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY");
 
-            _enabled = BooleanConverter.ToBoolean(AWS_ENABLED);
+            _enabled = !(string.IsNullOrEmpty(AWS_REGION) || string.IsNullOrEmpty(AWS_ACCESS_ID) || string.IsNullOrEmpty(AWS_ACCESS_KEY));
 
             if (_enabled)
             {

@@ -2,7 +2,7 @@
 using PipServices3.Components.Log;
 using Xunit;
 
-namespace PipServices3.Aws.Log
+namespace PipServices3.Aws.Test.Log
 {
     public sealed class LoggerFixture
     {

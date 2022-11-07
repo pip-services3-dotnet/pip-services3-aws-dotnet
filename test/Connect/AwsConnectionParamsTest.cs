@@ -1,7 +1,8 @@
-﻿using PipServices3.Commons.Config;
+﻿using PipServices3.Aws.Connect;
+using PipServices3.Commons.Config;
 using Xunit;
 
-namespace PipServices3.Aws.Connect
+namespace PipServices3.Aws.Test.Connect
 {
     public class AwsConnectionParamsTest
     {

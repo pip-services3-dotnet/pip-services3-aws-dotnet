@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <RootNamespace>PipServices3.Aws</RootNamespace>
     <AssemblyName>PipServices3.Aws</AssemblyName>
     <ApplicationIcon />
@@ -20,10 +20,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.SQS" Version="3.7.1.1" />
-    <PackageReference Include="AWSSDK.Core" Version="3.7.2.10" />
-    <PackageReference Include="AWSSDK.CloudWatchLogs" Version="3.7.1.33" />
-    <PackageReference Include="AWSSDK.CloudWatch" Version="3.7.2.14" />
+    <Compile Remove="Queues\**" />
+    <EmbeddedResource Remove="Queues\**" />
+    <None Remove="Queues\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.Lambda" Version="3.7.100.8" />
+    <PackageReference Include="AWSSDK.SQS" Version="3.7.100.8" />
+    <PackageReference Include="AWSSDK.Core" Version="3.7.100.8" />
+    <PackageReference Include="AWSSDK.CloudWatchLogs" Version="3.7.101.1" />
+    <PackageReference Include="AWSSDK.CloudWatch" Version="3.7.100.8" />
+    <PackageReference Include="PipServices3.Container" Version="3.3.0" />
     <PackageReference Include="PipServices3.Commons" Version="3.4.0" />
     <PackageReference Include="PipServices3.Components" Version="3.5.0" />
     <PackageReference Include="PipServices3.Messaging" Version="3.5.0" />
