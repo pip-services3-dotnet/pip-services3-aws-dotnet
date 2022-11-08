@@ -94,7 +94,7 @@ namespace PipServices3.Aws.Test.Services
         {
             var json = JsonConverter.ToJson(data);
 
-            var response = await _lambda.Act(json);
+            var response = await _lambda.ActAsync(json);
 
             if (string.IsNullOrEmpty(response))
                 return default;

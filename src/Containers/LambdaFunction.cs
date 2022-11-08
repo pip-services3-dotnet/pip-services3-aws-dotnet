@@ -15,7 +15,6 @@ using PipServices3.Commons.Refer;
 using PipServices3.Commons.Validate;
 using PipServices3.Components.Trace;
 using PipServices3.Aws.Utils;
-using static System.Collections.Specialized.BitVector32;
 
 namespace PipServices3.Aws.Containers
 {
@@ -321,16 +320,16 @@ namespace PipServices3.Aws.Containers
             return await ExecuteAsync(input);
         }
 
-        public async Task<string> Act(string input)
+        public async Task<string> ActAsync(string input)
         {
-            return await GetHandler()(input);
+            return await GetHandlerAsync()(input);
         }
 
         /// <summary>
         /// Gets entry point into this Lambda function.
         /// </summary>
         /// <returns>Returns plugin function</returns>
-        public Func<string, Task<string>> GetHandler()
+        public Func<string, Task<string>> GetHandlerAsync()
         {
             return Handler;
         }

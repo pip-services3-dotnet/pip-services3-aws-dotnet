@@ -1,5 +1,4 @@
 ﻿using System;
-using PipServices3.Aws.Containers;
 using PipServices3.Commons.Commands;
 
 using JsonConverter = PipServices3.Commons.Convert.JsonConverter;

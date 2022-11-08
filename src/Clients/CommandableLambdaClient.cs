@@ -39,7 +39,7 @@ namespace PipServices3.Aws.Clients
     /// ...
     /// 
     ///     public async Task<MyData> GetDataAsync(string correlationId, string id) {
-    ///         return await this.CallCommand<MyData>("get_data", correlationId, new { id=id });
+    ///         return await this.CallCommandAsync<MyData>("get_data", correlationId, new { id=id });
     ///     }
     ///     ...
     /// 
@@ -83,7 +83,7 @@ namespace PipServices3.Aws.Clients
         /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
         /// <param name="args">command parameters.</param>
         /// <returns>action result.</returns>
-        public async Task<T> CallCommand<T>(string cmd, string correlationId, object args)
+        public async Task<T> CallCommandAsync<T>(string cmd, string correlationId, object args)
             where T : class
         {
             var timing = Instrument(correlationId, _name + '.' + cmd);

@@ -369,7 +369,7 @@ namespace PipServices3.Aws.Services
         /// <param name="input">action parameters.</param>
         /// <returns>action result</returns>
         /// <exception cref="BadRequestException"></exception>
-        public async Task<string> Act(string input)
+        public async Task<string> ActAsync(string input)
         {
             var cmd = GetCommand(input);
             var correlationId = GetCorrelationId(input);

@@ -316,7 +316,7 @@ namespace PipServices3.Aws.Clients
         /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
         /// <param name="data">(optional) action parameters.</param>
         /// <returns>action result</returns>
-        protected async Task<T> CallOneWay<T>(string cmd, string correlationId, object data)
+        protected async Task<T> CallOneWayAsync<T>(string cmd, string correlationId, object data)
         {
             return await InvokeAsync<T>("Event", cmd, correlationId, data);
         }

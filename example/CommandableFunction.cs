@@ -26,7 +26,7 @@ public class CommandableFunction
             func.Configure(config);
             await func.OpenAsync(null);
 
-            handler = func.GetHandler();
+            handler = func.GetHandlerAsync();
         }
 
         using (var reader = new StreamReader(stream))
