@@ -37,9 +37,6 @@ namespace PipServices3.Aws.Services
     /// public class MyLambdaService : LambdaService
     /// {
     ///     private IMyController _controller;
-    ///     /// <summary>
-    ///     ///  ...
-    ///     /// </summary>
     ///     public MyLambdaService() : base("v1.myservice")
     ///     {
     ///         _dependencyResolver.Put(
@@ -341,8 +338,7 @@ namespace PipServices3.Aws.Services
         /// Registers a middleware for actions in Google Function service.
         /// </summary>
         /// <param name="action">an action function that is called when middleware is invoked.</param>
-        protected void RegisterInterceptor(string cmd,
-            Func<string, Func<string, Task<string>>, Task<string>> action)
+        protected void RegisterInterceptor(Func<string, Func<string, Task<string>>, Task<string>> action)
         {
             // Match by cmd pattern
             //async Task<string> interceptorWrapper(string input, Func<string, Task<string>> next)
