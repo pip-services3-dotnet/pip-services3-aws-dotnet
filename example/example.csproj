@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<AssemblyName>PipServices3.Aws.Example</AssemblyName>
 		<RootNamespace>PipServices3.Aws.Example</RootNamespace>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
@@ -14,8 +14,8 @@
 		<PublishReadyToRun>true</PublishReadyToRun>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Amazon.Lambda.Core" Version="2.1.0" />
-		<PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.3.0" />
+		<PackageReference Include="Amazon.Lambda.Core" Version="2.8.0" />
+		<PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.4.4" />
 	</ItemGroup>
 
 	<ItemGroup>
